@@ -32,7 +32,6 @@
 - belongs_to :users
 - has_one :orders 
 
-
 ## destinationsテーブル
 
 | Column         | Type      | Options                         |
@@ -43,12 +42,11 @@
 | city           | string    | null: false                     |
 | street_address | string    | null: false                     |
 | building_name  | string    | null: false                     |
-| phone_number   | string    | null: false                     |
+| phone_number   | string    | null: false                     | 
 
 ### Association
 
 - belongs_to :users
-
 
 ##  ordersテーブル
 
