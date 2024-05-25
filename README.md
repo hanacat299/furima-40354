@@ -10,9 +10,7 @@
 | mei          | string  | null: false                |
 | kana_sei     | string  | null: false                |
 | kana_mei     | string  | null: false                |
-| birth_year   | string  | null: false                |
-| birth_month  | string  | null: false                |
-| birth_day    | string  | null: false                |
+| birthday     | date    | null: false                |
 
 ### Association
 
@@ -21,11 +19,16 @@
 
 ## productsテーブル
 
-| Column       | Type    | Options                    |
-| ------------ | ------- | -------------------------- |
-| product_name | string  | null: false                |
-| explanation  | text    | null: false                |
-| price        | string  | null: false                |
+| Column        | Type      | Options                    |
+| ------------- | --------- | -------------------------- |
+| user_id       | reference | foreign_key: true          |
+| product_name  | string    | null: false                |
+| explanation   | text      | null: false                |
+| price         | integer   | null: false                |
+| genre_id      | string    | null: false                |
+| shipping_cost | integer   | null: false                |
+| prefecture_id | string    | null: false                |
+| shipping_days | string    | null: false                |
 
 ### Association
 
@@ -41,8 +44,8 @@
 | prefecture     | string    | null: false                     |
 | city           | string    | null: false                     |
 | street_address | string    | null: false                     |
-| building_name  | string    | null: false                     |
-| phone_number   | string    | null: false                     | 
+| building_name  | string    |                                 |
+| phone_number   | string    | null:false                      | 
 
 ### Association
 
@@ -54,8 +57,8 @@
 | -------------- | --------- | ------------------------------- |
 | user_id        | reference | null: false , foreign_key: true |
 | product_id     | reference | null: false , foreign_key: true |
-| destination_id | reference | null: false , foreign_key: true |
 
 ### Association
 
 - belongs_to :products
+- belongs_to :users
