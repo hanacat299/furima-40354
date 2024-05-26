@@ -15,50 +15,51 @@
 ### Association
 
 - has_many :products
-- has_one :destinations
+- has_one :destination
 
 ## productsテーブル
 
-| Column        | Type      | Options                    |
-| ------------- | --------- | -------------------------- |
-| user_id       | reference | foreign_key: true          |
-| product_name  | string    | null: false                |
-| explanation   | text      | null: false                |
-| price         | integer   | null: false                |
-| genre_id      | string    | null: false                |
-| shipping_cost | integer   | null: false                |
-| prefecture_id | string    | null: false                |
-| shipping_days | string    | null: false                |
+| Column        | Type       | Options                   　b  |
+| ------------- | ---------- | ------------------------------ |
+| user          | references | null: false, foreign_key: true |
+| product_name  | string     | null: false                    |
+| explanation   | text       | null: false                    |
+| price         | integer    | null: false                    |
+| genre_id      | integer    | null: false                    |
+| shipping_cost | integer    | null: false                    |
+| prefecture_id | integer    | null: false                    |
+| shipping_day  | string     | null: false                    |
 
 ### Association
 
-- belongs_to :users
-- has_one :orders 
+- belongs_to :user
+- has_one :order
 
 ## destinationsテーブル
 
-| Column         | Type      | Options                         |
-| -------------- | --------- | ------------------------------- |
-| user_id        | reference | null: false , foreign_key: true |
-| postal_code    | string    | null: false , unique: true      |
-| prefecture     | string    | null: false                     |
-| city           | string    | null: false                     |
-| street_address | string    | null: false                     |
-| building_name  | string    |                                 |
-| phone_number   | string    | null:false                      | 
+| Column         | Type       | Options                         |
+| -------------- | ---------- | ------------------------------- |
+| postal_code    | string     | null: false                     |
+| prefecture_id  | string     | null: false                     |
+| city           | string     | null: false                     |
+| street_address | string     | null: false                     |
+| building_name  | string     |                                 |
+| phone_number   | string     | null: false                     |
+| order          | references | null: false , foreign_key: true |
 
 ### Association
 
-- belongs_to :users
+- belongs_to :order
 
 ##  ordersテーブル
 
-| Column         | Type      | Options                         |
-| -------------- | --------- | ------------------------------- |
-| user_id        | reference | null: false , foreign_key: true |
-| product_id     | reference | null: false , foreign_key: true |
+| Column         | Type       | Options                         |
+| -------------- | ---------- | ------------------------------- |
+| user           | references | null: false , foreign_key: true |
+| product        | references | null: false , foreign_key: true |
 
 ### Association
 
-- belongs_to :products
-- belongs_to :users
+- belongs_to :product
+- belongs_to :user
+- has_one :destination
