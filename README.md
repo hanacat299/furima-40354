@@ -2,25 +2,25 @@
 
 ## usersテーブル 
 
-| Column       | Type    | Options                    |
-| ------------ | ------- | -------------------------- |
-| nickname     | string  | null: false                |
-| email        | string  | null: false , unique: true |
-| password     | string  | null: false                |
-| sei          | string  | null: false                |
-| mei          | string  | null: false                |
-| kana_sei     | string  | null: false                |
-| kana_mei     | string  | null: false                |
-| birthday     | date    | null: false                |
+| Column             | Type    | Options                    |
+| ------------------ | ------- | -------------------------- |
+| nickname           | string  | null: false                |
+| email              | string  | null: false , unique: true |
+| encrypted_password | string  | null: false                |
+| sei                | string  | null: false                |
+| mei                | string  | null: false                |
+| kana_sei           | string  | null: false                |
+| kana_mei           | string  | null: false                |
+| birthday           | date    | null: false                |
 
 ### Association
 
 - has_many :products
-- has_one :order
+- has_many :orders
 
 ## productsテーブル
 
-| Column           | Type       | Options                   　b  |
+| Column           | Type       | Options                   　   |
 | ---------------- | ---------- | ------------------------------ |
 | user             | references | null: false, foreign_key: true |
 | product_name     | string     | null: false                    |
