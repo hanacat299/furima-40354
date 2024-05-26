@@ -6,6 +6,7 @@
 | ------------ | ------- | -------------------------- |
 | nickname     | string  | null: false                |
 | email        | string  | null: false , unique: true |
+| password     | string  | null: false                |
 | sei          | string  | null: false                |
 | mei          | string  | null: false                |
 | kana_sei     | string  | null: false                |
@@ -15,20 +16,21 @@
 ### Association
 
 - has_many :products
-- has_one :destination
+- has_one :order
 
 ## productsテーブル
 
-| Column        | Type       | Options                   　b  |
-| ------------- | ---------- | ------------------------------ |
-| user          | references | null: false, foreign_key: true |
-| product_name  | string     | null: false                    |
-| explanation   | text       | null: false                    |
-| price         | integer    | null: false                    |
-| genre_id      | integer    | null: false                    |
-| shipping_cost | integer    | null: false                    |
-| prefecture_id | integer    | null: false                    |
-| shipping_day  | string     | null: false                    |
+| Column           | Type       | Options                   　b  |
+| ---------------- | ---------- | ------------------------------ |
+| user             | references | null: false, foreign_key: true |
+| product_name     | string     | null: false                    |
+| explanation      | text       | null: false                    |
+| price            | integer    | null: false                    |
+| genre_id         | integer    | null: false                    |
+| condition_id     | integer    | null: false                    |
+| shipping_cost_id | integer    | null: false                    |
+| prefecture_id    | integer    | null: false                    |
+| shipping_day_id  | integer    | null: false                    |
 
 ### Association
 
@@ -40,7 +42,7 @@
 | Column         | Type       | Options                         |
 | -------------- | ---------- | ------------------------------- |
 | postal_code    | string     | null: false                     |
-| prefecture_id  | string     | null: false                     |
+| prefecture_id  | integer    | null: false                     |
 | city           | string     | null: false                     |
 | street_address | string     | null: false                     |
 | building_name  | string     |                                 |
