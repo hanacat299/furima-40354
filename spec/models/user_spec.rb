@@ -59,16 +59,50 @@ end
     expect(@user.errors.full_messages).to include("Password is too short (minimum is 6 characters)")
    end
 
+   it 'passwordが数字のみでは登録できない' do
+    @user.password = '123456'
+    @user.password_confirmation = '123456'
+    @user.valid?
+    expect(@user.errors.full_messages).to include('Password must include both letters and numbers')
+   end
+
+   it 'passwordが英字のみでは登録できない' do
+    @user.password = 'abcdef'
+    @user.password_confirmation = 'abcdef'
+    @user.valid?
+    expect(@user.errors.full_messages).to include('Password must include both letters and numbers')
+  end
+
+   it 'passwordが全角の文字を含んでいると登録できない' do
+    @user.password = 'ａｂｃ１２３'
+    @user.password_confirmation = @user.password
+    @user.valid?
+    expect(@user.errors.full_messages).to include('Password must include both letters and numbers')
+   end
+
    it 'seiが空では登録できない' do
     @user.sei = ""
     @user.valid?
     expect(@user.errors.full_messages).to include("Sei can't be blank")
    end
 
+   it 'seiに半角文字が含まれていると登録できない' do
+    @user.sei = 'Yamada'
+    @user.valid?
+    expect(@user.errors.full_messages).to include("Sei can't contain half-width characters")
+   end
+
+
    it 'meiが空では登録できない' do
     @user.mei = ""
     @user.valid?
     expect(@user.errors.full_messages).to include("Mei can't be blank")
+   end
+
+   it 'meiに半角文字が含まれていると登録できない' do
+    @user.mei = 'Taro'
+    @user.valid?
+    expect(@user.errors.full_messages).to include("Mei can't contain half-width characters")
    end
 
    it 'kana_seiが空では登録できない' do
@@ -77,10 +111,22 @@ end
     expect(@user.errors.full_messages).to include("Kana sei can't be blank")
    end
 
-   it 'Kana_meiが空では登録できない' do
+   it 'kana_seiにカタカナ以外が含まれていると登録できない' do
+    @user.kana_sei = 'やまだ'
+    @user.valid?
+    expect(@user.errors.full_messages).to include('Kana sei must be in katakana')
+   end
+
+   it 'kana_meiが空では登録できない' do
     @user.kana_mei = ""
     @user.valid?
     expect(@user.errors.full_messages).to include("Kana mei can't be blank")
+   end
+
+  it 'kana_meiにカタカナ以外が含まれていると登録できない' do
+    @user.kana_mei = 'はなこ'
+    @user.valid?
+    expect(@user.errors.full_messages).to include('Kana mei must be in katakana')
    end
 
    it 'birthdayが空では登録できない' do

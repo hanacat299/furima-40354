@@ -4,11 +4,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  validates :password, format: { with: /\A[a-zA-Z0-9]+\z/, message: 'を入力してください'} 
   validates :nickname, presence: true
-  validates :sei, presence: true, format: { with: /\A[ぁ-んァ-ン一-龥]/, message: 'を入力してください' }
-  validates :mei, presence: true, format: { with: /\A[ぁ-んァ-ン一-龥]/, message: 'を入力してください' }
-  validates :kana_sei, presence: true, format: { with: /\A[ァ-ヶー－]+\z/, message: 'を入力してください' }
-  validates :kana_mei, presence: true, format: { with: /\A[ァ-ヶー－]+\z/, message: 'を入力してください' }
+  validates :password, presence: true, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i, message: 'must include both letters and numbers' }
+  validates :password, format: { without: /\p{Han}|\p{Hiragana}|\p{Katakana}/, message: 'cannot contain full-width characters' }
+  validates :sei, presence: true, format: { with: /\A[^\x20-\x7E]+\z/, message: "can't contain half-width characters" }
+  validates :mei, presence: true, format: { with: /\A[^\x20-\x7E]+\z/, message: "can't contain half-width characters" }
+  validates :kana_sei, presence: true, format: { with: /\A[\p{katakana}\u30A0-\u30FF]+\z/, message: "must be in katakana" }
+  validates :kana_mei, presence: true, format: { with: /\A[\p{katakana}\u30A0-\u30FF]+\z/, message: "must be in katakana" }
   validates :birthday, presence: true
+  
 end
+
