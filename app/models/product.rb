@@ -8,15 +8,15 @@ class Product < ApplicationRecord
   belongs_to :prefecture
   belongs_to :shipping_day
 
+  validates :image, presence: true
   validates :product_name, presence: true
   validates :explanation, presence: true
-  validates :price, presence: true,
-   format: { with: /\A[0-9]+\z/, message: 'は半角数字のみ入力してください'},
-   numericality: { other_than_or_equal_to: 300, less_than_or_equal_to: 9999999, message: 'は300円~9999999円の間の値段でなければなりません'}
-  validates :genre_id, numericality: { other_than: 1, message: "can't be blank" }
-  validates :condition_id, numericality: { other_than: 1, message: "can't be blank" }
-  validates :shipping_cost_id, numericality: { other_than: 1, message: "can't be blank" }
-  validates :prefecture_id, numericality: { other_than: 1, message: "can't be blank" }
-  validates :shipping_day_id, numericality: { other_than: 1, message: "can't be blank" }
+  validates :price, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9999999, message: "must be between 300 and 9999999" }
+  validates :genre_id, numericality: { other_than: 1, message: "must be other than 1" }
+  validates :condition_id, numericality: { other_than: 1, message: "must be other than 1" }
+  validates :shipping_cost_id, numericality: { other_than: 1, message: "must be other than 1" }
+  validates :prefecture_id, numericality: { other_than: 1, message: "must be other than 1" }
+  validates :shipping_day_id, numericality: { other_than: 1, message: "must be other than 1" }
+
 
 end
