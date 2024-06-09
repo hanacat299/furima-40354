@@ -15,6 +15,13 @@ RSpec.describe Product, type: :model do
     end
 
     context '商品が出品できないとき' do
+
+      it 'userが紐づいていないと出品できない' do
+        @product.user = nil
+        @product.valid?
+        expect(@product.errors.full_messages).to include("User must exist")
+      end
+
       it 'imageが空だと出品できない' do
         @product.image = nil
         @product.valid?
