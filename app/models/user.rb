@@ -11,6 +11,8 @@ class User < ApplicationRecord
   validates :kana_sei, presence: true, format: { with: /\A[\p{katakana}\u30A0-\u30FF]+\z/, message: "must be in katakana" }
   validates :kana_mei, presence: true, format: { with: /\A[\p{katakana}\u30A0-\u30FF]+\z/, message: "must be in katakana" }
   validates :birthday, presence: true
+
+  has_many :products
   
 end
 
