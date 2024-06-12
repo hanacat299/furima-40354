@@ -24,6 +24,24 @@ class ProductsController < ApplicationController
 
   def edit
     @product = Product.find(params[:id])
+    if user_signed_in?
+     if @product.user == current_user
+      render "edit"
+     else user_signed_in
+      redirect_to root_path
+     end
+    else
+     redirect_to new_user_session_path
+    end
+  end
+
+  def update
+    @product = Product.find(params[:id])
+    if @product.update(product_params)
+      redirect_to product_path(@product)
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
 
