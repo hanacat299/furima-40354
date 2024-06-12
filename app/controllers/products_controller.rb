@@ -27,7 +27,7 @@ class ProductsController < ApplicationController
     if user_signed_in?
      if @product.user == current_user
       render "edit"
-     else user_signed_in
+     else
       redirect_to root_path
      end
     else
