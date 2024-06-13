@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit]
-  before_action :set_product, only: [:show, :edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy]
  
 
   def index
@@ -38,6 +38,15 @@ class ProductsController < ApplicationController
       redirect_to product_path(@product)
     else
       render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    if @product.user == current_user
+      @product.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
     end
   end
 
