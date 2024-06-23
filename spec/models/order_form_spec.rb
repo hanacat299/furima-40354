@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe OrderForm, type: :model do
 
   before do
-    @orderform = FactoryBot.build(:orderform)
+    @orderform = FactoryBot.build(:order_form)
   end
 
   describe '商品購入機能' do
@@ -15,22 +15,28 @@ RSpec.describe OrderForm, type: :model do
     end
 
     context '商品が購入できないとき' do
+      it 'tokenが空では保存できない' do
+        @orderform.token = ""
+        @orderform.valid?
+        expect(@orderform.errors.full_messages).to include("Token can't be blank")
+      end
+
       it 'postal_codeが空では保存できない' do
         @orderform.postal_code = ""
         @orderform.valid?
-        expect(@orderform.errors.full_messages).to include("PostalCode can't be blank")
+        expect(@orderform.errors.full_messages).to include("Postal code is invalid. Include hyphen(-)")
       end
 
       it 'posta_codeは3桁ハイフン4桁の半角文字列以外では保存できない' do
         @orderform.postal_code = "123456"
         @orderform.valid?
-        expect(@orderform.errors.full_messages).to include("Postal code is invalid. Include hyphen")
+        expect(@orderform.errors.full_messages).to include("Postal code is invalid. Include hyphen(-)")
       end
 
       it 'prefecture_idが1では保存できない' do
         @orderform.prefecture_id = "1"
         @orderform.valid?
-        expect(@orderForm.errors.full_messages).to include("Prefecture must be other than 1")
+        expect(@orderform.errors.full_messages).to include("Prefecture must be other than 1")
       end
 
       it 'cityが空では保存できない' do
@@ -58,5 +64,7 @@ RSpec.describe OrderForm, type: :model do
       end
 
     end
+
+end
 
 end
