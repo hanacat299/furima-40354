@@ -2,13 +2,19 @@ class OrderForm
 include ActiveModel::Model
 attr_accessor :user_id, :product_id, :postal_code, :prefecture_id, :city, :street_address, :building_name, :phone_number, :token
 
+with_options presence: true do
+validates :postal_code, format: {with: /\A\d{3}[-]\d{4}\z/, message: "is invalid. Include hyphen(-)" }
 validates :prefecture_id, numericality: { other_than: 1, message: "must be other than 1" }
-validates :postal_code,   presence: true, format: {with: /\A\d{3}[-]\d{4}\z/, message: "is invalid. Include hyphen(-)" }
+validates :city        
+validates :street_address
+validates :phone_number, format: { with: /\A\d{10,11}\z/,message: "is invalid."}
+validates :token   
+validates :user_id
+validates :product_id 
+end   
+
 validates :prefecture_id, numericality: { other_than: 1, message: "must be other than 1" }
-validates :city,          presence: true
-validates :street_address,presence: true
-validates :phone_number,  presence: true, format: { with: /\A\d{10,11}\z/,message: "is invalid. Include hyphen(-)"}
-validates :token,         presence: true
+
 
 def save
   if valid?

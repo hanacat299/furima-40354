@@ -3,7 +3,9 @@ require 'rails_helper'
 RSpec.describe OrderForm, type: :model do
 
   before do
-    @orderform = FactoryBot.build(:order_form)
+    @user = FactoryBot.create(:user)
+    @product = FactoryBot.create(:product)
+    @orderform = FactoryBot.build(:order_form, user_id: @user.id, product_id: @product.id)
   end
 
   describe '商品購入機能' do
@@ -11,6 +13,11 @@ RSpec.describe OrderForm, type: :model do
     context '商品が購入できるとき' do
       it 'postal_code,prefecture_id,city,street_address,phone_number,orderが存在すれば登録できる' do
        expect(@orderform).to be_valid
+      end
+
+      it 'building_nameが空でも保存できる' do
+        @orderform.building_name = ""
+        expect(@orderform).to be_valid
       end
     end
 
@@ -24,7 +31,7 @@ RSpec.describe OrderForm, type: :model do
       it 'postal_codeが空では保存できない' do
         @orderform.postal_code = ""
         @orderform.valid?
-        expect(@orderform.errors.full_messages).to include("Postal code is invalid. Include hyphen(-)")
+        expect(@orderform.errors.full_messages).to include("Postal code can't be blank")
       end
 
       it 'posta_codeは3桁ハイフン4桁の半角文字列以外では保存できない' do
@@ -57,10 +64,34 @@ RSpec.describe OrderForm, type: :model do
         expect(@orderform.errors.full_messages).to include("Phone number can't be blank")
       end
 
-      it 'phone_numberが10桁以上11桁以内の半角数字以外では保存できない' do
+      it 'phone_numberが9桁以下では保存できない' do
+        @orderform.phone_number = "123456789"
+        @orderform.valid?
+        expect(@orderform.errors.full_messages).to include("Phone number is invalid.")
+      end
+
+      it 'phone_numberが12桁以上では保存できない' do
+        @orderform.phone_number = "123456789012"
+        @orderform.valid?
+        expect(@orderform.errors.full_messages).to include("Phone number is invalid.")
+      end
+
+      it 'phone_numberが半角数字以外が含まれると保存できない' do
         @orderform.phone_number = "abcdf"
         @orderform.valid?
-        expect(@orderform.errors.full_messages).to include("Phone number is invalid. Include hyphen(-)")
+        expect(@orderform.errors.full_messages).to include("Phone number is invalid.")
+      end
+
+      it 'user_idが空では保存できない' do
+        @orderform.user_id = nil
+        @orderform.valid?
+        expect(@orderform.errors.full_messages).to include("User can't be blank")
+      end
+
+      it 'product_idが空では保存できない' do
+        @orderform.product_id = nil
+        @orderform.valid?
+        expect(@orderform.errors.full_messages).to include("Product can't be blank")
       end
 
     end

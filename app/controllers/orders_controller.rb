@@ -1,9 +1,10 @@
 class OrdersController < ApplicationController
 
   before_action :authenticate_user!, only: [:index, :create]
+  before_action :set_product
 
   def index
-    @product = Product.find(params[:product_id])
+    set_product
     if @product.user == current_user || @product.order.present?
       redirect_to root_path
     end
@@ -18,13 +19,17 @@ class OrdersController < ApplicationController
       @orderform.save
       return redirect_to root_path
     else
-      @product = Product.find(params[:product_id])
+      set_product
       gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
       render "index", status: :unprocessable_entity
     end
   end
 
   private
+
+  def set_product
+    @product = Product.find(params[:product_id])
+  end
 
   def order_params
     params.require(:order_form).permit(
@@ -34,7 +39,7 @@ class OrdersController < ApplicationController
 
 
   def pay_product
-    @product = Product.find(params[:product_id])
+    set_product
     Payjp.api_key = ENV["PAYJP_SECRET_KEY"]
     Payjp::Charge.create(
       amount: @product.price,
@@ -42,5 +47,7 @@ class OrdersController < ApplicationController
       currency: 'jpy'
     )
   end
+
+ 
 
 end
