@@ -1,9 +1,12 @@
 class OrdersController < ApplicationController
 
-  before_action :authenticate_user!, only: [:purchase]
+  before_action :authenticate_user!, only: [:index, :create]
 
   def index
     @product = Product.find(params[:product_id])
+    if @product.user == current_user || @product.order.present?
+      redirect_to root_path
+    end
     gon.public_key = ENV["PAYJP_PUBLIC_KEY"]
     @orderform = OrderForm.new
   end
@@ -29,14 +32,6 @@ class OrdersController < ApplicationController
       ).merge(token: params[:token])
   end
 
-  def purchase
-    @product = Product.find(params[:id])
-
-    # 自身が出品した商品の場合はトップページにリダイレクト
-    if @product.user == current_user
-      redirect_to root_path, alert: "自分が出品した商品の購入ページにはアクセスできません。"
-    end
-  end
 
   def pay_product
     @product = Product.find(params[:product_id])
